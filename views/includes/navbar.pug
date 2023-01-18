@@ -1,0 +1,15 @@
+nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
+            .container
+                a.navbar-brand(href="/") Shopping
+                ul.navbar-nav.mr-auto
+                    li.nav-item
+                        a(href="/",class=(path=='/'?'nav-link active' :'nav-link')) Home
+                    li.nav-item
+                        a(href="/admin/add-product",class=(path=='/admin/add-product'?'nav-link active' :'nav-link')) Product add
+               
+                ul.navbar-nav.ml-auto
+                    li.nav-item
+                        a.nav-link(href="") Login
+                    li.nav-item
+                        a.nav-link(href="") Register
+

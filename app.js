@@ -7,14 +7,16 @@ const adminRoutes = require('./routes/admin');
 
 const userRoutes = require('./routes/user');
 
+app.set('view engine','pug');
+app.set('views','./views');
 
 app.use(bodyParser.urlencoded({extended:false}));
-app.use('/admin',adminRoutes);
+app.use('/admin',adminRoutes.routes);
 app.use(userRoutes);
 
 app.use((req,res)=>{
     res.status(404);
-    res.sendFile(path.join(__dirname,'/views/404.html'))
+    res.render('404',{title:'Error',path:'/error'})
 });
 app.listen(3000,()=>{
     console.log("3000 portunda calisiyor");

@@ -1,0 +1,9 @@
+mixin createProduct(product)
+    tr
+        th(scope="row") #{product.id} 
+        td(scope="row") #{product.name} 
+        td(scope="row") #{product.price} 
+        td(scope="row") #{product.description} 
+        td
+            button(type="button").btn.btn-primary Satın Al 
+
