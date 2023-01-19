@@ -1,0 +1,17 @@
+extends ../layouts/main-layout.pug
+
+block content
+    form(action="/admin/add-product" method="POST")
+        .label(for="name") Ürün Adı:
+        br
+        input(type="text" id="name" name="name")
+        br
+        .label(for="price") Ürün Fiyatı:
+        br
+        input(type="text" id="price" name="price")
+        br
+        .label(for="description") Ürün Açıklaması:
+        br
+        input(type="text" id="description" name="description")
+        br
+        input.btn.btn-success(type="submit" value="Submit")

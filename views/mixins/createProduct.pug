@@ -4,6 +4,8 @@ mixin createProduct(product)
         td(scope="row") #{product.name} 
         td(scope="row") #{product.price} 
         td(scope="row") #{product.description} 
+        td 
+            a(href=`products/${product.id}`).btn.btn.primary Detaylar
         td
             button(type="button").btn.btn-primary Satın Al 
 

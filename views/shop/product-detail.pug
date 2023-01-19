@@ -1,0 +1,14 @@
+extends ../layouts/main-layout.pug
+
+
+block content
+
+    .row
+        .col-md-4
+            img.card-img-top(src="../../img/Enes.jpg")
+        .col-md-8.pl-4
+            p #{product.description}
+            hr
+            p price: #{product.price}
+            button(type="submit").btn.btn-primary.btn-lg Sepete ekle
+            

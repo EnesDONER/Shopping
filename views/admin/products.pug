@@ -1,0 +1,20 @@
+extends ../layouts/main-layout.pug
+
+
+block content
+    .row
+        if 1 >0
+            table.table              
+                thead
+                    tr
+                        th(scope="col") #
+                        th(scope="col") Ürün Adı
+                        th(scope="col") Fiyat
+                        th(scope="col") Açıklama
+                        th(scope="col") 
+                tbody                    
+                    each product in products               
+                        +createProduct(product)
+        else 
+            h1 Ürün yok  
+    
