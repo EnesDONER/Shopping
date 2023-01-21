@@ -35,5 +35,9 @@ exports.postEditProduct =(req,res,next)=>{
     product.price = req.body.price;
     product.description = req.body.description;
     Product.Update(product)
-    res.redirect('/');
- }
+    res.redirect('/admin/product-list');
+}
+exports.getDeleteProduct = (req,res,next)=>{
+    Product.DeleteById(req.params.productid);
+    res.redirect('/admin/product-list');
+}

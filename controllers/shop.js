@@ -1,13 +1,18 @@
-const Product = require('../models/product')
+const Product = require('../models/product');
+const Category = require('../models/category');
 
 exports.getIndex = (req,res,next)=>{
     const products = Product.getAll();
-    res.render('shop/index',{title:'Shopping',products:products,path:'/'});
+    const categories = Category.getAll();
+    res.render('shop/index',
+    {title:'Shopping',products:products,categories:categories,path:'/'});
 }
 
 exports.getProducts = (req,res,next)=>{
     const products = Product.getAll();
-    res.render('shop/products',{title:'Products',products:products,path:'/'});
+    const categories = Category.getAll();
+    res.render('shop/products',
+    {title:'Products',products:products,categories:categories,path:'/'});
 }
 exports.getProduct = (req,res,next)=>{
     const product = Product.getById(req.params.productid);

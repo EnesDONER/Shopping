@@ -6,3 +6,7 @@ mixin editProduct(product)
         td(scope="row") #{product.description} 
         td 
             a(href=`products/${product.id}`).btn.btn.primary Edit
+            br 
+            a(href=`delete/${product.id}`).btn.btn.primary Delete
+                
+

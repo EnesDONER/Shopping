@@ -29,5 +29,9 @@ module.exports = class Product{
        
 
     }
+    static DeleteById(id){
+        const index = products.findIndex(i=>i.id==id);
+        products.splice(index,1);
+    }
 }
 

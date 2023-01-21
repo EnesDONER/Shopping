@@ -4,20 +4,25 @@ include ../mixins/createProduct.pug
 
 block content
 
-    .row
-        if 1 >0
-            table.table              
-                thead
-                    tr
-                        th(scope="col") #
-                        th(scope="col") Ürün Adı
-                        th(scope="col") Fiyat
-                        th(scope="col") Açıklama
-                        th(scope="col") 
-                tbody                    
-                    each product in products               
-                        +createProduct(product)
-        else 
-            h1 Ürün yok  
+    .row 
+        .col-md-3
+            include ../includes/menu.pug
+        
+        .col-md-9    
+            .row
+                if 1 >0
+                    table.table              
+                        thead
+                            tr
+                                th(scope="col") #
+                                th(scope="col") Ürün Adı
+                                th(scope="col") Fiyat
+                                th(scope="col") Açıklama
+                                th(scope="col") 
+                        tbody                    
+                            each product in products               
+                                +createProduct(product)
+                else 
+                    h1 Ürün yok  
                     
             
