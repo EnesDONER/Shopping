@@ -2,7 +2,7 @@ const Product = require('../models/product')
 
 exports.getProduct = (req,res,next)=>{
     const products = Product.getAll();
-    res.render('admin/products',{title:'Admin Products',products:products,path:'/admin/products'});
+    res.render('admin/product-list',{title:'Admin Product List',products:products,path:'/admin/product-list'});
 }
 
 exports.getAddProduct = (req,res,next)=>{
@@ -18,13 +18,22 @@ exports.postAddProduct =(req,res,next)=>{
     res.redirect('/');
  }
  exports.getEditProduct = (req,res,next)=>{
+    const product = Product.getById(req.params.productid);
+    
     res.render('admin/edit-product',
     {
-        title:'New Product',
-        path:'/admin/edit-product'}
+        title:'Edit Product',
+        path:'admin/products',
+        product: product
+    }
+      
     );
 }
 exports.postEditProduct =(req,res,next)=>{ 
-
+    const product = Product.getById(req.body.id);
+    product.name = req.body.name;
+    product.price = req.body.price;
+    product.description = req.body.description;
+    Product.Update(product)
     res.redirect('/');
  }

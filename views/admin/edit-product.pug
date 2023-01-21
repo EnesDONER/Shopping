@@ -1,17 +1,19 @@
 extends ../layouts/main-layout.pug
 
 block content
-    form(action="/admin/add-product" method="POST")
-        .label(for="name") Ürün Adı:
+    form(action="/admin/products" method="POST")
+
+        input(type="hidden" name="id" value=`${product.id}`)
+        .label(for="number") Ürün Adı:
         br
-        input(type="text" id="name" name="name")
+        input(type="text" id="name" name="name" value=`${product.name}`)
         br
         .label(for="price") Ürün Fiyatı:
         br
-        input(type="text" id="price" name="price")
+        input(type="number" id="price" name="price" value=`${product.price}`)  
         br
         .label(for="description") Ürün Açıklaması:
         br
-        input(type="text" id="description" name="description")
+        input(type="text" id="description" name="description" value=`${product.description}`)
         br
-        input.btn.btn-success(type="submit" value="Submit")
+        input.btn.btn-success(type="submit" value="Güncelle")

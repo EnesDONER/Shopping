@@ -1,5 +1,7 @@
 extends ../layouts/main-layout.pug
 
+include ../mixins/editProduct.pug
+
 
 block content
     .row
@@ -14,7 +16,7 @@ block content
                         th(scope="col") 
                 tbody                    
                     each product in products               
-                        +createProduct(product)
+                        +editProduct(product)
         else 
             h1 Ürün yok  
     

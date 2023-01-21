@@ -21,5 +21,13 @@ module.exports = class Product{
         const product= products.find(i=>i.id ==id);
         return product;
     }
+    static Update(product){
+        const index = products.findIndex(i=>i.id===product.id);
+        products[index].name = product.name;
+        products[index].price = product.price;
+        products[index].description = product.description;
+       
+
+    }
 }
 
