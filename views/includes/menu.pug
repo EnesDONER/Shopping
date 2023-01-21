@@ -1,4 +1,4 @@
 .list-group
     if 5 > 0
         each category in categories 
-            a(href=`/categories/${category.id}`).list-group-item #{category.name}
+            a(href=`/categories/${category.id}` class=category.id==selectedCategoryId?"list-group-item active":"list-group-item") #{category.name}

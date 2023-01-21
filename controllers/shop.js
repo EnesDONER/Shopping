@@ -7,12 +7,25 @@ exports.getIndex = (req,res,next)=>{
     res.render('shop/index',
     {title:'Shopping',products:products,categories:categories,path:'/'});
 }
+exports.getProductsByCategoryId = (req,res,next)=>{
+    const products = Product.getProductByCategoryId(req.params.categoryid);
+    
+    const categories = Category.getAll();
+    
+    res.render('shop/index',{
+        title:'Products',
+        products:products,
+        categories:categories,
+        selectedCategoryId:req.params.categoryid,
+        path:'/'
+    })
 
+}
 exports.getProducts = (req,res,next)=>{
     const products = Product.getAll();
     const categories = Category.getAll();
     res.render('shop/products',
-    {title:'Products',products:products,categories:categories,path:'/'});
+    {title:'Products',products:products,categories:categories,path:'/products'});
 }
 exports.getProduct = (req,res,next)=>{
     const product = Product.getById(req.params.productid);
