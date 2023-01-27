@@ -2,10 +2,16 @@ const Product = require('../models/product');
 const Category = require('../models/category');
 
 exports.getIndex = (req,res,next)=>{
-    const products = Product.getAll();
     const categories = Category.getAll();
-    res.render('shop/index',
-    {title:'Shopping',products:products,categories:categories,path:'/'});
+    Product.getAll()
+        .then(products =>{
+            res.render('shop/index',
+            {title:'Shopping',products:products[0],categories:categories,path:'/'});
+        })
+        .catch((err)=>{
+            console.log(err);
+        });
+    
 }
 exports.getProductsByCategoryId = (req,res,next)=>{
     const products = Product.getProductByCategoryId(req.params.categoryid);
@@ -28,19 +34,20 @@ exports.getProducts = (req,res,next)=>{
     {title:'Products',products:products,categories:categories,path:'/products'});
 }
 exports.getProduct = (req,res,next)=>{
-    const product = Product.getById(req.params.productid);
-    res.render('shop/product-detail',{
-        title:product.name,
-        product:product,
-        path:'/products'
-    })
-    res.redirect('/');
+    Product.getById(req.params.productid)
+        .then((product)=>{
+            res.render('shop/product-detail',{
+                title:product[0][0].name,
+                product:product[0][0],
+                path:'/products'
+            });
+        })
+        .catch((err)=>{
+            console.log(err);
+        });
 }
 
-exports.getProductDetails = (req,res,next)=>{
-    const products = Product.getAll();
-    res.render('shop/details',{title:'Details',path:'/details'});
-}
+
 exports.getCart = (req,res,next)=>{
     const products = Product.getAll();
     res.render('shop/cart',{title:'Cart',path:'/cart'});

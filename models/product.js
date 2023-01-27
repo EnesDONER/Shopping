@@ -1,38 +1,25 @@
-const products =[
-    {id:151,categoryid:1,name:'scszc',price:2,description:'acdcds'},
-    {id:152,categoryid:1,name:'dwzc',price:2,description:'cdvdcds'},
-    {id:153,categoryid:2,name:'wadscszc',price:2,description:'fecdcds'},
-    {id:154,categoryid:2,name:'wadscszc',price:2,description:'fecdcds'},
-    {id:155,categoryid:3,name:'wadscszc',price:2,description:'fecdcds'},
-    {id:156,categoryid:1,name:'wadscszc',price:2,description:'fecdcds'},
-
-];
+const connection = require('../utility/database');
 
 module.exports = class Product{
-    constructor(id,name,price,description,categoryid){
-        this.id =id;
+    constructor(name,price,description,categoryid){
         this.categoryid=categoryid,
         this.name = name;
         this.price =price;
         this.description=description;
     }
     saveProduct(){
-        products.push(this);
+        return connection.execute('INSERT INTO products (name,price,description) VALUES (?,?,?)',[this.name,this.price,this.description]);
+        
     }
     static getAll(){
-        return products;
+        return connection.execute('SELECT * FROM products');
     }
     static getById(id){
-        const product= products.find(i=>i.id ==id);
-        return product;
+        return connection.execute('SELECT * FROM products WHERE id='+id);
     }
     static Update(product){
-        const index = products.findIndex(i=>i.id===product.id);
-        products[index].name = product.name;
-        products[index].price = product.price;
-        products[index].description = product.description;
-       
-
+        return connection.execute('ALTER TABLE products{values:} * FROM products WHERE id='+id);
+        
     }
     static DeleteById(id){
         const index = products.findIndex(i=>i.id==id);
