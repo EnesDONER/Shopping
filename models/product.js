@@ -8,7 +8,7 @@ module.exports = class Product{
         this.description=description;
     }
     saveProduct(){
-        return connection.execute('INSERT INTO products (name,price,description) VALUES (?,?,?)',[this.name,this.price,this.description]);
+        return connection.execute('INSERT INTO products (name,categoryId,price,description) VALUES (?,?,?,?)',[this.name,this.categoryid,this.price,this.description]);
         
     }
     static getAll(){
@@ -18,16 +18,16 @@ module.exports = class Product{
         return connection.execute('SELECT * FROM products WHERE id='+id);
     }
     static Update(product){
-        return connection.execute('ALTER TABLE products{values:} * FROM products WHERE id='+id);
+        return connection.execute('UPDATE products SET products.categoryId=?,products.name=?,products.price=?,products.description=? WHERE products.id=?',
+        [product.categoryid,product.name,product.price,product.description,product.id]);
         
     }
     static DeleteById(id){
-        const index = products.findIndex(i=>i.id==id);
-        products.splice(index,1);
+        return connection.execute('DELETE FROM products WHERE id=?',[id])
     }
-    static getProductByCategoryId(categoryid){
+    static getProductByCategoryId(categoryId){
         
-        return  products.filter(i=>i.categoryid==categoryid);
+        return  products.filter(i=>i.categoryId==categoryId);
         
     }
 }

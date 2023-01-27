@@ -15,15 +15,16 @@ exports.getProduct = (req,res,next)=>{
 }
 
 exports.getAddProduct = (req,res,next)=>{
-    const categories= Category.getAll();
-    res.render('admin/add-product',
-    {
-        title:'New Product',
-        path:'/admin/add-product',
-        categories:categories
-    }  
-        
-    );
+    Category.getAll()
+        .then((categories)=>{
+            res.render('admin/add-product',
+            {
+            title:'New Product',
+            path:'/admin/add-product',
+            categories:categories[0]
+            });
+        })
+        .catch((err)=>{console.log(err)})
 }
 exports.postAddProduct =(req,res,next)=>{ 
     const product = new Product();
@@ -37,16 +38,21 @@ exports.postAddProduct =(req,res,next)=>{
  }
  exports.getEditProduct = (req,res,next)=>{
 
-    const categories= Category.getAll();
+    
     Product.getById(req.params.productid)
         .then((product)=>{
-            res.render('admin/edit-product',
-            {
-                title:'Edit Product',
-                path:'admin/products',
-                product: product[0][0],
-                categories:categories
-            });
+            Category.getAll()
+                .then((categories=>{
+                    res.render('admin/edit-product',
+                    {
+                        title:'Edit Product',
+                        path:'admin/products',
+                        product: product[0][0],
+                        categories:categories[0]
+                    });
+                }))
+                .catch((err)=>{console.log(err)});
+         
         })
         .catch((err)=>{
             console.log(err);
@@ -54,15 +60,21 @@ exports.postAddProduct =(req,res,next)=>{
    
 }
 exports.postEditProduct =(req,res,next)=>{ 
-    const product = Product.getById(req.body.id);
+    const product = new Product();
+    product.id=req.body.id;
     product.name = req.body.name;
     product.price = req.body.price;
     product.description = req.body.description;
     product.categoryid=req.body.categoryid;
     Product.Update(product)
-    res.redirect('/admin/product-list');
+        .then(()=>{
+            res.redirect('/admin/product-list');
+        })
+        .catch((err)=>{console.log(err);})
+    
 }
 exports.getDeleteProduct = (req,res,next)=>{
-    Product.DeleteById(req.params.productid);
-    res.redirect('/admin/product-list');
+    Product.DeleteById(req.params.productid).then(()=>{
+        res.redirect('/admin/product-list');
+    })
 }
