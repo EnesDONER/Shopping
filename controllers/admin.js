@@ -37,19 +37,25 @@ exports.postAddProduct =(req,res,next)=>{
     
  }
  exports.getEditProduct = (req,res,next)=>{
-
+    
     
     Product.getById(req.params.productid)
         .then((product)=>{
             Category.getAll()
                 .then((categories=>{
-                    res.render('admin/edit-product',
-                    {
-                        title:'Edit Product',
-                        path:'admin/products',
-                        product: product[0][0],
-                        categories:categories[0]
-                    });
+                    Category.getCategoryByProductId(req.params.productid)
+                        .then((selectedCategory)=>{
+                            console.log(selectedCategory[0][0].name);
+                            res.render('admin/edit-product',
+                            {
+                                title:'Edit Product',
+                                path:'admin/products',
+                                product: product[0][0],
+                                categories:categories[0],
+                                selectedCategory: selectedCategory[0][0].id
+                            });
+                        })
+                        .catch((err)=>{console.log(err)});
                 }))
                 .catch((err)=>{console.log(err)});
          
@@ -57,7 +63,7 @@ exports.postAddProduct =(req,res,next)=>{
         .catch((err)=>{
             console.log(err);
         });
-   
+
 }
 exports.postEditProduct =(req,res,next)=>{ 
     const product = new Product();

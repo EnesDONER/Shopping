@@ -18,7 +18,8 @@
     "live-server": "^1.2.2",
     "mysql2": "^1.6.4",
     "path": "^0.12.7",
-    "save": "^2.9.0"
+    "save": "^2.9.0",
+    "sequelize": "^4.42.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

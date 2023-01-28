@@ -30,5 +30,6 @@ module.exports = class Product{
         return  products.filter(i=>i.categoryId==categoryId);
         
     }
+    
 }
 

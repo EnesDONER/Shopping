@@ -4,7 +4,8 @@ const bodyParser = require('body-parser');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const errorsController = require('./controllers/errors');
-const connection = require('./utility/database');
+const sequelize = require('./utility/database');
+
 
 
 app.set('view engine','pug');
@@ -15,8 +16,7 @@ app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 app.use(errorsController.get404Page);
 
-
-
+sequelize.authenticate().then(()=>console.log('bağlandı')).catch((err)=>console.log(err))
 
 
 app.listen(3000,()=>{

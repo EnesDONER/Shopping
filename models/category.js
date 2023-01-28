@@ -19,8 +19,10 @@ module.exports = class Category{
         return connection.execute('UPDATE categories SET categories.name=? WHERE categories.id=?',[category.name]);
     
     }
-    deleteById(id){
+    static deleteById(id){
         return connection.execute('DELETE FROM categories WHERE id=?',[id])
     }
-    
+    static getCategoryByProductId(id){
+        return connection.execute('SELECT categories.id ,categories.name as name FROM categories INNER JOIN  products ON products.categoryId =categories.id AND products.id ='+id);
+    }
 }

@@ -2,7 +2,9 @@ extends ../layouts/main-layout.pug
 
 block content
     form(action="/admin/products" method="POST")
-
+        br
+        br
+        br
         input(type="hidden" name="id" value=`${product.id}`)
         .label(for="number") Ürün Adı:
         br
@@ -11,9 +13,9 @@ block content
         .label(for="name") Kategory Adı:
         br
         select.form-control#categoryid(name="categoryid")
-            option(value="-1") Kategori Seç
+             
             each category in categories 
-                option(value=`${category.id}` selected= category.id===product.categoryid)  #{category.name}
+                option(value=`${category.id}` selected =  selectedCategory==category.id)  #{category.name}
         br
         .label(for="price") Ürün Fiyatı:
         br
