@@ -2,15 +2,26 @@ const Product = require('../models/product');
 const Category = require('../models/category');
 
 exports.getIndex = (req,res,next)=>{
-    const categories = Category.getAll();
-    Product.getAll()
-        .then(products =>{
-            res.render('shop/index',
-            {title:'Shopping',products:products[0],categories:categories,path:'/'});
+
+    Product.findAll()
+        .then(products => {
+            Category.findAll()
+                .then(categories=> {
+                    console.log(categories)
+                    res.render('shop/index',
+                    {title:'Shopping',
+                    products:products,
+                    categories:categories,
+                    path:'/'});
+                })
+                .catch((err)=>{
+                    console.log(err);
+                });   
         })
         .catch((err)=>{
             console.log(err);
         });
+        
     
 }
 exports.getProductsByCategoryId = (req,res,next)=>{
@@ -28,17 +39,31 @@ exports.getProductsByCategoryId = (req,res,next)=>{
 
 }
 exports.getProducts = (req,res,next)=>{
-    const products = Product.getAll();
-    const categories = Category.getAll();
-    res.render('shop/products',
-    {title:'Products',products:products,categories:categories,path:'/products'});
+    Product.findAll()
+        .then(products =>{
+            Category.findAll()
+                .then(categories=> {
+                    res.render('shop/products',{
+                        title:'Shopping',
+                        products:products,
+                        categories:categories,
+                        path:'/'
+                    });
+                })
+                .catch((err)=>{
+                    console.log(err);
+                });   
+        })
+        .catch((err)=>{
+            console.log(err);
+        });
 }
 exports.getProduct = (req,res,next)=>{
-    Product.getById(req.params.productid)
+    Product.findByPk(req.params.productid)
         .then((product)=>{
             res.render('shop/product-detail',{
-                title:product[0][0].name,
-                product:product[0][0],
+                title:product.name,
+                product:product,
                 path:'/products'
             });
         })

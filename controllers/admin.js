@@ -1,11 +1,12 @@
 const Product = require('../models/product');
 const Category = require('../models/category');
+const { result } = require('underscore');
 
 exports.getProduct = (req,res,next)=>{
     
-    Product.getAll()
+    Product.findAll()
         .then(products =>{
-            res.render('admin/product-list',{title:'Admin Product List',products:products[0],path:'/admin/product-list'});
+            res.render('admin/product-list',{title:'Admin Product List',products:products,path:'/admin/product-list'});
         })
         .catch((err)=>{
             console.log(err);
@@ -15,47 +16,62 @@ exports.getProduct = (req,res,next)=>{
 }
 
 exports.getAddProduct = (req,res,next)=>{
-    Category.getAll()
-        .then((categories)=>{
-            res.render('admin/add-product',
-            {
-            title:'New Product',
-            path:'/admin/add-product',
-            categories:categories[0]
-            });
-        })
-        .catch((err)=>{console.log(err)})
+    res.render('admin/add-product',
+    {
+    title:'New Product',
+    path:'/admin/add-product',
+    
+    });
 }
 exports.postAddProduct =(req,res,next)=>{ 
-    const product = new Product();
-    
-    product.name = req.body.name;
-    product.price=req.body.price;
-    product.description= req.body.description;
-    product.categoryid=req.body.categoryid;
-    product.saveProduct().then(()=>res.redirect('/')).catch((err)=>{console.log(err)});
+
+    const name = req.body.name;
+    const price=req.body.price;
+    const description= req.body.description;
+    //const categoryid=req.body.categoryid;
+    Product.create({
+        name:name,
+        price:price,
+        description:description
+    })
+    .then(result => {
+        console.log(result);
+        res.redirect('/');
+    })
+    .catch(err=>{console.log(err)});
     
  }
  exports.getEditProduct = (req,res,next)=>{
     
     
-    Product.getById(req.params.productid)
+    Product.findByPk(req.params.productid)
         .then((product)=>{
-            Category.getAll()
+            Category.findAll()
                 .then((categories=>{
-                    Category.getCategoryByProductId(req.params.productid)
-                        .then((selectedCategory)=>{
-                            console.log(selectedCategory[0][0].name);
-                            res.render('admin/edit-product',
+                    // Category.getCategoryByProductId(req.params.productid)
+                    //     .then((selectedCategory)=>{
+                        
+                    //         res.render('admin/edit-product',
+                    //         {
+                    //             title:'Edit Product',
+                    //             path:'admin/products',
+                    //             product: product,
+                    //             categories:categories,
+                                
+                    //         });
+                    //     })
+                    //     .catch((err)=>{console.log(err)});
+
+
+                    res.render('admin/edit-product',
                             {
                                 title:'Edit Product',
                                 path:'admin/products',
-                                product: product[0][0],
-                                categories:categories[0],
-                                selectedCategory: selectedCategory[0][0].id
+                                product: product,
+                                categories:categories,
+                                
                             });
-                        })
-                        .catch((err)=>{console.log(err)});
+
                 }))
                 .catch((err)=>{console.log(err)});
          
@@ -66,21 +82,28 @@ exports.postAddProduct =(req,res,next)=>{
 
 }
 exports.postEditProduct =(req,res,next)=>{ 
-    const product = new Product();
-    product.id=req.body.id;
-    product.name = req.body.name;
-    product.price = req.body.price;
-    product.description = req.body.description;
-    product.categoryid=req.body.categoryid;
-    Product.Update(product)
-        .then(()=>{
+    
+    const id=req.body.id;
+    const name = req.body.name;
+    const price = req.body.price;
+    const description = req.body.description;
+    const categoryid=req.body.categoryid;
+    Product.findByPk(id)
+        .then(product=>{
+            product.name=name;
+            product.price= price;
+            product.description=description;
+            return product.save();
+        })
+        .then(result=>{
+            console.log('uptated');
             res.redirect('/admin/product-list');
         })
-        .catch((err)=>{console.log(err);})
+        .catch();
     
 }
 exports.getDeleteProduct = (req,res,next)=>{
-    Product.DeleteById(req.params.productid).then(()=>{
+    Product.destroy({where:{id:req.params.productid}}).then(()=>{
         res.redirect('/admin/product-list');
     })
 }

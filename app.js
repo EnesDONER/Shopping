@@ -16,9 +16,9 @@ app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 app.use(errorsController.get404Page);
 
-sequelize.authenticate().then(()=>console.log('bağlandı')).catch((err)=>console.log(err))
-
-
+// sequelize.sync().then(result=>{
+//     console.log(result)
+// }).catch((err)=>console.log(err));
 app.listen(3000,()=>{
     console.log("3000 portunda calisiyor");
 });
