@@ -6,13 +6,13 @@ block content
         br
         input(type="text" id="name" name="name")
         br
-        //- .label(for="name") Kategory Adı:
-        //- br
-        //- select.form-control#categoryid(name="categoryid")
-        //-     option(value="-1") Kategori sec
-        //-     each category in categories 
-        //-         option(value=`${category.id}`)  #{category.name}
-        //- br
+        .label(for="name") Kategory Adı:
+        br
+        select.form-control#categoryid(name="categoryid")
+            option(value="-1") Kategori sec
+            each category in categories 
+                option(value=`${category.id}`)  #{category.name}
+        br
         .label(for="price") Ürün Fiyatı:
         br
         input(type="number" id="price" name="price")

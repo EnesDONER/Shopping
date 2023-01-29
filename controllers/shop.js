@@ -25,18 +25,23 @@ exports.getIndex = (req,res,next)=>{
     
 }
 exports.getProductsByCategoryId = (req,res,next)=>{
-    const products = Product.getProductByCategoryId(req.params.categoryid);
-    
-    const categories = Category.getAll();
-    
-    res.render('shop/index',{
-        title:'Products',
-        products:products,
-        categories:categories,
-        selectedCategoryId:req.params.categoryid,
-        path:'/'
-    })
-
+    const categoryid =req.params.categoryid;
+    const model= [];
+    Category.findAll()
+        .then(categories=>{
+            model.categories=categories;
+            const category = categories.find(i=>i.id==categoryid);
+            return category.getProducts()
+        })
+        .then(products=>{
+            res.render('shop/index',{
+                title:'Products',
+                products:products,
+                categories:model.categories,
+                selectedCategoryId:req.params.categoryid,
+                path:'/'
+            })
+        })
 }
 exports.getProducts = (req,res,next)=>{
     Product.findAll()

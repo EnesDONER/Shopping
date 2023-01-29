@@ -15,7 +15,7 @@ block content
         select.form-control#categoryid(name="categoryid")
              
             each category in categories 
-                option(value=`${category.id}` selected =  selectedCategory==category.id)  #{category.name}
+                option(value=`${category.id}` selected =  category.id===product.categoryId)  #{category.name}
         br
         .label(for="price") Ürün Fiyatı:
         br
