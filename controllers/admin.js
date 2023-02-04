@@ -33,7 +33,9 @@ exports.postAddProduct =(req,res,next)=>{
     const price=req.body.price;
     const description= req.body.description;
     const categoryid=req.body.categoryid;
-    Product.create({
+    const user=req.user;
+
+    user.createProduct({
         name:name,
         price:price,
         description:description,

@@ -7,13 +7,27 @@ const errorsController = require('./controllers/errors');
 const sequelize = require('./utility/database');
 const Category= require('./models/category');
 const Product= require('./models/product');
-const { count } = require('console');
+const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cartItem');
 
 
 app.set('view engine','pug');
 app.set('views','./views');
-
 app.use(bodyParser.urlencoded({extended:false}));
+
+app.use((req,res,next)=>{
+    User.findByPk(1)
+        .then(user=>{
+            req.user = user;
+            next();
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+})
+
+
 app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 app.use(errorsController.get404Page);
@@ -25,17 +39,36 @@ Product.belongsTo(Category,{
 });
 Category.hasMany(Product);
 
-sequelize.sync()
+Product.belongsTo(User);
+User.hasMany(Product);
+
+User.hasOne(Cart);
+Cart.belongsTo(User);
+Cart.belongsToMany(Product,{through:CartItem});
+Product.belongsToMany(Cart,{through:CartItem});
+sequelize
+    .sync({force:true})
+    //.sync()
     .then(()=>{
-        Category.count()
-            .then(count=>{
-                if(count===0){
-                    Category.bulkCreate([
-                        {name:'Telefon'},
-                        {name:'Bilgisayar'},
-                        {name:'Tablet'}
-                    ]);
+
+        User.findByPk(1)
+            .then(user=>{
+                if(!user){
+                   return  User.create({name:'enes',email:'enes@gmail.com'});
                 }
+                return user;
+            })
+            .then(user=>{
+                Category.count()
+                .then(count=>{
+                    if(count===0){
+                        Category.bulkCreate([
+                            {name:'Telefon'},
+                            {name:'Bilgisayar'},
+                            {name:'Tablet'}
+                        ]);
+                    }   
+                });
             });
     })
     .catch((err)=>console.log(err));
