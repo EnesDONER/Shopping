@@ -10,6 +10,7 @@ const Product= require('./models/product');
 const User = require('./models/user');
 const Cart = require('./models/cart');
 const CartItem = require('./models/cartItem');
+const { count } = require('console');
 
 
 app.set('view engine','pug');
@@ -46,9 +47,12 @@ User.hasOne(Cart);
 Cart.belongsTo(User);
 Cart.belongsToMany(Product,{through:CartItem});
 Product.belongsToMany(Cart,{through:CartItem});
+
+let _user;
+
 sequelize
-    .sync({force:true})
-    //.sync()
+    //.sync({force:true})
+    .sync()
     .then(()=>{
 
         User.findByPk(1)
@@ -59,6 +63,16 @@ sequelize
                 return user;
             })
             .then(user=>{
+                _user = user;
+                return user.getCart();
+                
+               
+            }).then(cart=>{
+                if(!cart){
+                    return _user.createCart();
+                }
+                return cart;
+            }).then(count=>{
                 Category.count()
                 .then(count=>{
                     if(count===0){
