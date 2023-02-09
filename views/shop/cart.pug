@@ -2,7 +2,38 @@ extends ../layouts/main-layout.pug
 
 
 block content
+    .row
+        if products[0]
+            table.table              
+                thead
+                    tr
+                        th(scope="col") Ürün Adı
+                        th(scope="col") Fiyat
+                        th(scope="col") Miktar
+                        th(scope="col") Toplam Fiyat
 
+                tbody                    
+                    each product in products               
+                        tr
+                            td(scope="row") #{product.name} 
+                            td(scope="row") #{product.price} TL
+                            td(scope="row") #{product.cartItem.quantity} 
+                            td(scope="row") #{(product.cartItem.quantity)*(product.price)} 
+                            td 
+                                form(action='/delete-cartitem' method='POST')
+                                    input(type='hidden' name='productid' value=`${product.id}`) 
+                                    button(type='submit').btn.btn-danger.btn-sm Delete
+                tfoot 
+                    td(colspan= "4")
+                        - var total =0;
+                        each product in products
+                            -total += (product.price * product.cartItem.quantity)
+                    td Toplam : #{total}TL
+            .text-center
+                a(href="/").btn.btn-primary Alısverişe Devam Et  
+                a(href="/checkout").btn.btn-primary.ml-5 Alısverişi Tamamla 
+        else 
+            h1 Ürün yok 
     
                     
             

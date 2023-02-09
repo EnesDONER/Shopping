@@ -1,5 +1,6 @@
 const Product = require('../models/product');
 const Category = require('../models/category');
+const { result } = require('underscore');
 
 exports.getIndex = (req,res,next)=>{
 
@@ -7,12 +8,13 @@ exports.getIndex = (req,res,next)=>{
         .then(products => {
             Category.findAll()
                 .then(categories=> {
-                    console.log(categories)
                     res.render('shop/index',
-                    {title:'Shopping',
-                    products:products,
-                    categories:categories,
-                    path:'/'});
+                        {
+                            title:'Shopping',                  
+                            products:products,           
+                            categories:categories,   
+                            path:'/'
+                        });
                 })
                 .catch((err)=>{
                     console.log(err);
@@ -85,6 +87,7 @@ exports.getCart = (req,res,next)=>{
         .then(cart=>{
             return cart.getProducts()
                 .then(products=>{
+                    console.log(products)
                     res.render('shop/cart',{title:'Cart',path:'/cart',products:products});
                 }).catch(err=>{
                     console.log(err);
@@ -106,7 +109,7 @@ exports.postCart = (req,res,next)=>{
                 return cart.getProducts({where:{id:productId}});
             }).then(products=>{
                 let product;
-                if(products.lenght>0){
+                if(products[0]){
                     product = products[0];
                 }
                 if(product){
@@ -128,7 +131,28 @@ exports.postCart = (req,res,next)=>{
 
    
 }
+exports.postDeleteCartItem = (req,res,next)=>{
+    const productId = req.body.productid;
+    console.log("///////////////////////////////////hata0/////")
+    req.user
+        .getCart()
+        .then(cart=>{
+            console.log("///////////////////////////////////hata1/////")
 
+            return cart.getProducts({where:{id:productId}});
+        })
+        .then(products=>{
+            console.log("///////////////////////////////////hata2/////")
+            const product = products[0];
+            return product.cartItem.destroy();
+        })
+        .then(result=>{
+            res.redirect('/cart');
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+}
 
 exports.getOrders = (req,res,next)=>{
     const products = Product.getAll();
