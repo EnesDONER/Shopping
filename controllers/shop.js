@@ -1,6 +1,7 @@
 const Product = require('../models/product');
 const Category = require('../models/category');
 const { result } = require('underscore');
+const Order = require('../models/Order');
 
 exports.getIndex = (req,res,next)=>{
 
@@ -155,6 +156,45 @@ exports.postDeleteCartItem = (req,res,next)=>{
 }
 
 exports.getOrders = (req,res,next)=>{
-    const products = Product.getAll();
-    res.render('shop/orders',{title:'Orders',path:'/orders'});
+    req.user
+        .getOrders({include: ['products']})
+        .then(orders=>{
+            
+            res.render('shop/orders',{title:'Orders',path:'/orders',orders:orders});
+        })
+        .catch(err=>console.log(err));
+
+    const orders = req.body.orders;
+    
+}
+exports.postOrder = (req,res,next)=>{
+    let userCart;
+    req.user
+        .getCart()
+            .then(cart=>{
+                userCart = cart;
+                return cart.getProducts();
+            })
+            .then(products=>{
+                return req.user.createOrder()
+                    .then(order=>{
+                        order.addProducts(products.map(product=>{
+                            product.orderItem ={
+                                quantity:product.cartItem.quantity,
+                                price: product.price
+                            }
+                            return product;
+                        }));
+                    })
+                    .catch(err=>{console.log(err)});
+            })
+            .then(()=>{
+                userCart.setProducts(null);
+            })
+            .then(()=>{
+                res.redirect('/orders');
+            })
+            .catch(err=>{
+                console.log(err);
+            })
 }

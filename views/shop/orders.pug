@@ -3,4 +3,34 @@ extends ../layouts/main-layout.pug
 
 block content
 
+    if orders[0]
+        each  order in orders
+            .card.mb-5
+                .card-header     
+                    h3 order id: #{order.id}
+                table.table
+                    thead
+                        tr 
+                            th Ürün Adı
+                            th Fiyat
+                            th Miktar
+                    tbody 
+                        each  product in order.products
+                            tr 
+                                td #{product.name}        
+                                td #{product.orderItem.quantity}        
+                                td #{product.orderItem.price}        
+                    tfoot
+                        tr
+                            td(colspan="2") #{order.createdAt.toDateString()}
+                            td
+                            - var total =0;
+                            each product in order.products
+                                -total += (product.price * product.orderItem.quantity)
+                            td Toplam : #{total}TL
+                                                    
     
+    
+    
+    else 
+        h1 Siparişiniz Yok 

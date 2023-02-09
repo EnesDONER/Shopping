@@ -30,8 +30,9 @@ block content
                             -total += (product.price * product.cartItem.quantity)
                     td Toplam : #{total}TL
             .text-center
-                a(href="/").btn.btn-primary Alısverişe Devam Et  
-                a(href="/checkout").btn.btn-primary.ml-5 Alısverişi Tamamla 
+                a(href="/").btn.btn-primary Alısverişe Devam Et
+                form(action="/create-order" method="POST")
+                    button(type="submit").btn.btn-primary.ml-5 Alısverişi Tamamla 
         else 
             h1 Ürün yok 
     
