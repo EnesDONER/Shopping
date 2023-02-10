@@ -3,6 +3,10 @@ extends ../layouts/main-layout.pug
 block content
     h1 Kayıt Ol
     form(action="/register" method="POST")
+        .label(for="name") İsim:
+        br
+        input(type="text" id="name" name="name")
+        br
         .label(for="email") Email:
         br
         input(type="text" id="email" name="email")

@@ -94,41 +94,41 @@ sequelize
     //.sync({force:true})
     .sync()
     .then(()=>{
-
-        User.findByPk(1)
-            .then(user=>{
-                if(!user){
-                   return  User.create({name:'enes',email:'enes@gmail.com'});
-                }
-                return user;
-            })
-            .then(user=>{
-                _user = user;
-                return user.getCart();
+        app.listen(3000);
+        // User.findByPk(1)
+        //     .then(user=>{
+        //         if(!user){
+        //            return  User.create({name:'enes',email:'enes@gmail.com'});
+        //         }
+        //         return user;
+        //     })
+        //     .then(user=>{
+        //         _user = user;
+        //         return user.getCart();
                 
                
-            }).then(cart=>{
-                if(!cart){
-                    return _user.createCart();
-                }
-                return cart;
-            }).then(count=>{
-                Category.count()
-                .then(count=>{
-                    if(count===0){
-                        Category.bulkCreate([
-                            {name:'Telefon'},
-                            {name:'Bilgisayar'},
-                            {name:'Tablet'}
-                        ]);
-                    }   
-                });
-            });
+        //     }).then(cart=>{
+        //         if(!cart){
+        //             return _user.createCart();
+        //         }
+        //         return cart;
+        //     }).then(count=>{
+        //         Category.count()
+        //         .then(count=>{
+        //             if(count===0){
+        //                 Category.bulkCreate([
+        //                     {name:'Telefon'},
+        //                     {name:'Bilgisayar'},
+        //                     {name:'Tablet'}
+        //                 ]);
+        //             }   
+        //         });
+        //     });
     })
     .catch((err)=>console.log(err));
 
 
 
-app.listen(3000,()=>{
-    console.log("3000 portunda calisiyor");
-});
+// app.listen(3000,()=>{
+//     console.log("3000 portunda calisiyor");
+// });
