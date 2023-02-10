@@ -15,10 +15,32 @@ const Order = require('./models/Order');
 const OrderItem = require('./models/OrderItem');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+var mySQLStore = require('express-mysql-session')(session);
 
 
 app.set('view engine','pug');
 app.set('views','./views');
+
+//session
+var options = {
+	host: 'localhost',
+	port: 3306,
+	user: 'root',
+	password: '425385',
+	database: 'node-app'
+};
+
+var sessionStore = new mySQLStore(options); 
+
+app.use(session({
+    secret:'keybord cat',
+    resave: false,
+    saveUninitialized :false,
+    cookie:{
+        maxAge:3600000},
+    store: sessionStore
+}))
+
 
 //middleware
 
@@ -35,13 +57,7 @@ app.use((req,res,next)=>{
 })
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cookieParser());
-app.use(session({
-    secret:'keybord cat',
-    resave: false,
-    saveUninitialized :false,
-    cookie:{
-        maxAge:3600000}
-}))
+
 app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 app.use(accountRoutes);
@@ -54,6 +70,7 @@ Product.belongsTo(Category,{
         allowNull:false
     }
 });
+
 Category.hasMany(Product);
 
 Product.belongsTo(User);
