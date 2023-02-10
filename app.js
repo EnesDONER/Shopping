@@ -14,6 +14,7 @@ const CartItem = require('./models/cartItem');
 const Order = require('./models/Order');
 const OrderItem = require('./models/OrderItem');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 
 
 app.set('view engine','pug');
@@ -34,6 +35,13 @@ app.use((req,res,next)=>{
 })
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cookieParser());
+app.use(session({
+    secret:'keybord cat',
+    resave: false,
+    saveUninitialized :false,
+    cookie:{
+        maxAge:3600000}
+}))
 app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 app.use(accountRoutes);

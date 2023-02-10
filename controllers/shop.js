@@ -2,7 +2,7 @@ const Product = require('../models/product');
 const Category = require('../models/category');
 
 exports.getIndex = (req,res,next)=>{
-    console.log(req.cookies.isAuthenticated);
+    console.log(req.session.isAuthenticated);
     Product.findAll()
         .then(products => {
             Category.findAll()
@@ -13,7 +13,7 @@ exports.getIndex = (req,res,next)=>{
                             products:products,           
                             categories:categories,   
                             path:'/',
-                            isAuthenticated:req.cookies.isAuthenticated ==='true'
+                            isAuthenticated:req.session.isAuthenticated
                         });
                 })
                 .catch((err)=>{
