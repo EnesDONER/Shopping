@@ -24,8 +24,9 @@ exports.postLogin = (req,res,next)=>{
                         req.session.user = user;
                         req.session.isAuthenticated=true;
                         return req.session.save(function (err){
-                            console.log(err);
-                            res.redirect('/');
+                            var url = req.session.redirectTo || '/';
+                            delete req.session.redirectTo;
+                            return res.redirect(url);
                         })
                     }
                     res.redirect('/login');
@@ -77,4 +78,11 @@ exports.getReset = (req,res,next)=>{
 }
 exports.postReset = (req,res,next)=>{
     res.redirect('/login');
+}
+exports.getLogout = (req,res,next)=>{
+    req.session.destroy(err=>{
+        console.log(err);
+        res.redirect('/');
+    });
+    
 }
