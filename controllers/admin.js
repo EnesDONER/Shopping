@@ -15,6 +15,7 @@ exports.getProduct = (req,res,next)=>{
 }
 
 exports.getAddProduct = (req,res,next)=>{
+
     Category.findAll()
         .then((categories)=>{
             res.render('admin/add-product',
