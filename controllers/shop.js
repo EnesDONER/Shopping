@@ -41,7 +41,8 @@ exports.getProductsByCategoryId = (req,res,next)=>{
                 products:products,
                 categories:model.categories,
                 selectedCategoryId:req.params.categoryid,
-                path:'/'
+                path:'/',
+                isAuthenticated:req.session.isAuthenticated
             })
         })
 }
@@ -54,7 +55,8 @@ exports.getProducts = (req,res,next)=>{
                         title:'Shopping',
                         products:products,
                         categories:categories,
-                        path:'/'
+                        path:'/',
+                        isAuthenticated:req.session.isAuthenticated
                     });
                 })
                 .catch((err)=>{
@@ -71,7 +73,8 @@ exports.getProduct = (req,res,next)=>{
             res.render('shop/product-detail',{
                 title:product.name,
                 product:product,
-                path:'/products'
+                path:'/products',
+                isAuthenticated:req.session.isAuthenticated
             });
         })
         .catch((err)=>{
@@ -88,7 +91,7 @@ exports.getCart = (req,res,next)=>{
             return cart.getProducts()
                 .then(products=>{
                     console.log(products)
-                    res.render('shop/cart',{title:'Cart',path:'/cart',products:products});
+                    res.render('shop/cart',{title:'Cart',path:'/cart',products:products,isAuthenticated:req.session.isAuthenticated});
                 }).catch(err=>{
                     console.log(err);
                 })
@@ -159,7 +162,7 @@ exports.getOrders = (req,res,next)=>{
         .getOrders({include: ['products']})
         .then(orders=>{
             
-            res.render('shop/orders',{title:'Orders',path:'/orders',orders:orders});
+            res.render('shop/orders',{title:'Orders',path:'/orders',orders:orders,isAuthenticated:req.session.isAuthenticated});
         })
         .catch(err=>console.log(err));
 

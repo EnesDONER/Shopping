@@ -5,7 +5,7 @@ exports.getProduct = (req,res,next)=>{
     
     Product.findAll()
         .then(products =>{
-            res.render('admin/product-list',{title:'Admin Product List',products:products,path:'/admin/product-list'});
+            res.render('admin/product-list',{title:'Admin Product List',products:products,path:'/admin/product-list',isAuthenticated:req.session.isAuthenticated});
         })
         .catch((err)=>{
             console.log(err);
@@ -21,7 +21,8 @@ exports.getAddProduct = (req,res,next)=>{
             {
             title:'New Product',
             path:'/admin/add-product',
-            categories:categories
+            categories:categories,
+            isAuthenticated:req.session.isAuthenticated
             
             });
         })
@@ -61,6 +62,7 @@ exports.postAddProduct =(req,res,next)=>{
                                 path:'admin/products',
                                 product: product,
                                 categories:categories,
+                                isAuthenticated:req.session.isAuthenticated
                                 
                             });
 

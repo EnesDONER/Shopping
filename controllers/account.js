@@ -1,5 +1,6 @@
 const User = require('../models/user');
 // const Cart = require('../models/cart');
+const bcyrpt = require('bcrypt');
 
 exports.getLogin = (req,res,next)=>{
     res.render('account/login',{
@@ -12,14 +13,25 @@ exports.postLogin = (req,res,next)=>{
     const email = req.body.email;
     const password = req.body.password;
 
-    if((email=='enes@gmail.com') && (password=='1234')){
-        //res.cookie('isAuthenticated',true);
-        req.session.isAuthenticated = true;
-        res.redirect('/');
-    }
-    else{
-        res.redirect('/login');
-    }
+    User.findOne({where:{email:email}})
+        .then(user=>{
+            if(!user){
+                return res.redirect('login');
+            }
+            bcyrpt.compare(password,user.password)
+                .then(isSuccess=>{
+                    if(isSuccess){
+                        req.session.user = user;
+                        req.session.isAuthenticated=true;
+                        return req.session.save(function (err){
+                            console.log(err);
+                            res.redirect('/');
+                        })
+                    }
+                    res.redirect('/login');
+                }).catch(err=>{console.log(err)})
+        }).catch(err=>{console.log(err)})
+    
         
 }
 exports.getRegister = (req,res,next)=>{
@@ -39,7 +51,8 @@ exports.postRegister = (req,res,next)=>{
             if(user){
                 return res.redirect('/register')
             }
-            return  User.create({name:name,email:email,password:password});
+            const passawordhashed= bcyrpt.hashSync(password,10);
+            return  User.create({name:name,email:email,password:passawordhashed});
         })
         .then(user=>{
             _user = user;
