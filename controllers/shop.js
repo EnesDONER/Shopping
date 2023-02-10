@@ -1,10 +1,8 @@
 const Product = require('../models/product');
 const Category = require('../models/category');
-const { result } = require('underscore');
-const Order = require('../models/Order');
 
 exports.getIndex = (req,res,next)=>{
-
+    console.log(req.cookies.isAuthenticated);
     Product.findAll()
         .then(products => {
             Category.findAll()
@@ -15,7 +13,7 @@ exports.getIndex = (req,res,next)=>{
                             products:products,           
                             categories:categories,   
                             path:'/',
-                            isAuthenticated:req.isAuthenticated
+                            isAuthenticated:req.cookies.isAuthenticated ==='true'
                         });
                 })
                 .catch((err)=>{

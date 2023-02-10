@@ -8,8 +8,8 @@ exports.postLogin = (req,res,next)=>{
     const email = req.body.email;
     const password = req.body.password;
 
-    if((email=='enes@gmail.com')&& (password=='1234')){
-        req.isAuthenticated =true;
+    if((email=='enes@gmail.com') && (password=='1234')){
+        res.cookie('isAuthenticated',true);
         res.redirect('/');
     }
     else{

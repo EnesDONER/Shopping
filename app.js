@@ -13,12 +13,14 @@ const Cart = require('./models/cart');
 const CartItem = require('./models/cartItem');
 const Order = require('./models/Order');
 const OrderItem = require('./models/OrderItem');
-
+const cookieParser = require('cookie-parser');
 
 
 app.set('view engine','pug');
 app.set('views','./views');
-app.use(bodyParser.urlencoded({extended:false}));
+
+//middleware
+
 
 app.use((req,res,next)=>{
     User.findByPk(1)
@@ -30,9 +32,8 @@ app.use((req,res,next)=>{
             console.log(err);
         })
 })
-
-//middleware
-
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(cookieParser());
 app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 app.use(accountRoutes);
