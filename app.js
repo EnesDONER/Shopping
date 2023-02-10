@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
+const accountRoutes = require('./routes/account');
 const errorsController = require('./controllers/errors');
 const sequelize = require('./utility/database');
 const Category= require('./models/category');
@@ -30,11 +31,15 @@ app.use((req,res,next)=>{
         })
 })
 
+//middleware
 
 app.use('/admin',adminRoutes);
 app.use(shopRoutes);
+app.use(accountRoutes);
 app.use(errorsController.get404Page);
 
+
+//database
 Product.belongsTo(Category,{
     foreignKey:{
         allowNull:false
@@ -95,6 +100,8 @@ sequelize
             });
     })
     .catch((err)=>console.log(err));
+
+
 
 app.listen(3000,()=>{
     console.log("3000 portunda calisiyor");

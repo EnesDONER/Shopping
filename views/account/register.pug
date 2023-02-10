@@ -1,0 +1,14 @@
+extends ../layouts/main-layout.pug
+
+block content
+    h1 Kayıt Ol
+    form(action="/register" method="POST")
+        .label(for="email") Email:
+        br
+        input(type="text" id="email" name="email")
+        br
+        .label(for="password") Parola:
+        br
+        input(type="password" id="password" name="password")
+        br
+        input.btn.btn-success(type="submit" value="Kayıt Ol")
