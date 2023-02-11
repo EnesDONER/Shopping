@@ -8,6 +8,7 @@ mixin createProduct(product)
             a(href=`products/${product.id}`).btn.btn-secondary Detaylar
         td
             form(action='/cart' method='POST')
+                include ../includes/csrf.pug
                 input(type='hidden' name='productId' value=`${product.id}`)
                 button(type="submit").btn.btn-primary Satın Al 
 

@@ -1,8 +1,10 @@
 extends ../layouts/main-layout.pug
 
+
 block content
     h1 Giriş Yap
     form(action="/login" method="POST")
+        include ../includes/csrf.pug
         .label(for="email") Email:
         br
         input(type="text" id="email" name="email")

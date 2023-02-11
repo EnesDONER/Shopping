@@ -16,7 +16,7 @@ const OrderItem = require('./models/OrderItem');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 var mySQLStore = require('express-mysql-session')(session);
-
+const csurf = require('csurf');
 
 app.set('view engine','pug');
 app.set('views','./views');
@@ -60,7 +60,7 @@ app.use((req,res,next)=>{
 })
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cookieParser());
-
+app.use(csurf());
 app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 app.use(accountRoutes);

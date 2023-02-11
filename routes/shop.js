@@ -2,16 +2,17 @@ const express = require('express');
 const router = express.Router();
 const shopController = require('../controllers/shop')
 const isAuthenticated = require('../middleware/authentication')
+const  csrf= require('../middleware/csrf')
 
 
-router.get('/',shopController.getIndex)
-router.get('/products',shopController.getProducts)
-router.get('/products/:productid',shopController.getProduct)
-router.get('/categories/:categoryid',shopController.getProductsByCategoryId)
+router.get('/',csrf,shopController.getIndex)
+router.get('/products',csrf,shopController.getProducts)
+router.get('/products/:productid',csrf,shopController.getProduct)
+router.get('/categories/:categoryid',csrf,shopController.getProductsByCategoryId)
 
-router.get('/cart',isAuthenticated,shopController.getCart)
-router.post('/cart',isAuthenticated,shopController.postCart)
-router.post('/delete-cartitem',isAuthenticated,shopController.postDeleteCartItem)
-router.get('/orders',isAuthenticated,isAuthenticated,shopController.getOrders)
-router.post('/create-order',isAuthenticated,shopController.postOrder)
+router.get('/cart',csrf,isAuthenticated,shopController.getCart)
+router.post('/cart',csrf,isAuthenticated,shopController.postCart)
+router.post('/delete-cartitem',csrf,isAuthenticated,shopController.postDeleteCartItem)
+router.get('/orders',csrf,isAuthenticated,isAuthenticated,shopController.getOrders)
+router.post('/create-order',csrf,isAuthenticated,shopController.postOrder)
 module.exports = router;

@@ -21,6 +21,7 @@ block content
                             td(scope="row") #{(product.cartItem.quantity)*(product.price)} 
                             td 
                                 form(action='/delete-cartitem' method='POST')
+                                    include ../includes/csrf.pug
                                     input(type='hidden' name='productid' value=`${product.id}`) 
                                     button(type='submit').btn.btn-danger.btn-sm Delete
                 tfoot 

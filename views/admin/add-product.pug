@@ -2,6 +2,7 @@ extends ../layouts/main-layout.pug
 
 block content
     form(action="/admin/add-product" method="POST")
+        include ../includes/csrf.pug
         .label(for="name") Ürün Adı:
         br
         input(type="text" id="name" name="name")

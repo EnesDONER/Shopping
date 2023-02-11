@@ -22,9 +22,7 @@ exports.getAddProduct = (req,res,next)=>{
             {
             title:'New Product',
             path:'/admin/add-product',
-            categories:categories,
-            isAuthenticated:req.session.isAuthenticated
-            
+            categories:categories,            
             });
         })
     
@@ -63,8 +61,6 @@ exports.postAddProduct =(req,res,next)=>{
                                 path:'admin/products',
                                 product: product,
                                 categories:categories,
-                                isAuthenticated:req.session.isAuthenticated
-                                
                             });
 
                 }))
