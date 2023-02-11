@@ -3,9 +3,16 @@ const User = require('../models/user');
 const bcyrpt = require('bcrypt');
 
 exports.getLogin = (req,res,next)=>{
+    var errorMessage= req.session.errorMessage;
+    var successMessage= req.session.successMessage;
+    delete req.session.errorMessage;
+    delete req.session.successMessage;
+    
     res.render('account/login',{
         path:'/login',
         title:'Login',
+        errorMessage:errorMessage,
+        successMessage:successMessage
     })
 }
 exports.postLogin = (req,res,next)=>{
@@ -15,6 +22,7 @@ exports.postLogin = (req,res,next)=>{
     User.findOne({where:{email:email}})
         .then(user=>{
             if(!user){
+                req.session.errorMessage = 'Bu mail adresi ile bir kayıt bulunamamıştır.';
                 return res.redirect('login');
             }
             bcyrpt.compare(password,user.password)
@@ -35,9 +43,16 @@ exports.postLogin = (req,res,next)=>{
         
 }
 exports.getRegister = (req,res,next)=>{
+    var errorMessage= req.session.errorMessage;
+    var successMessage= req.session.successMessage;
+    delete req.session.errorMessage;
+    delete req.session.successMessage;
+
     res.render('account/register',{
         path:'/register',
         title:'Register',
+        errorMessage:errorMessage,
+        successMessage:successMessage
     })
 }
 exports.postRegister = (req,res,next)=>{
@@ -48,7 +63,11 @@ exports.postRegister = (req,res,next)=>{
     User.findOne({where:{email:email}})
         .then(user=>{
             if(user){
-                return res.redirect('/register')
+                req.session.errorMessage='Bu mail adresi ile daha önce kayıt olunmuş';
+                req.session.save(function(err){
+                    console.log(err);
+                    return res.redirect('/register');
+                })
             }
             const passawordhashed= bcyrpt.hashSync(password,10);
             return  User.create({name:name,email:email,password:passawordhashed});
@@ -64,9 +83,9 @@ exports.postRegister = (req,res,next)=>{
             return cart;
         })
         .then(()=>{
+            req.session.successMessage='Başarılı bir şekilde kayıt oldunuz. Lütfen giriş yapın.';
             res.redirect('/login');
         }).catch(err=>{console.log(err)})
-    res.redirect('/login');
 }
 exports.getReset = (req,res,next)=>{
     res.render('account/reset',{
