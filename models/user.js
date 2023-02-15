@@ -12,6 +12,10 @@ const User = sequelize.define('user',{
     email:{type:Sequelize.STRING,allowNull:false},
     password:{type:Sequelize.STRING,allowNull:false},
     resetToken:Sequelize.STRING,
-    resetTokenExpiration:Sequelize.DATE
+    resetTokenExpiration:Sequelize.DATE,
+    isAdmin:{
+        type:Sequelize.BOOLEAN,
+        defaultValue:false
+    }
 });
 module.exports = User;

@@ -3,7 +3,7 @@ const Category = require('../models/category');
 
 exports.getProduct = (req,res,next)=>{
     
-    Product.findAll()
+    Product.findAll({where:{userId:req.user.id}})
         .then(products =>{
             res.render('admin/product-list',{title:'Admin Product List',products:products,path:'/admin/product-list',isAuthenticated:req.session.isAuthenticated});
         })
