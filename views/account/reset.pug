@@ -1,7 +1,9 @@
 extends ../layouts/main-layout.pug
 
 block content
-    form(action="/login" method="POST")
+    if errorMessage
+        div.alert.alert-danger.col-sm-5.pr-0 #{errorMessage}
+    form(action="/reset-password" method="POST")
         include ../includes/csrf.pug
         .label(for="email") Email:
         br
